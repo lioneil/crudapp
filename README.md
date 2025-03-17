@@ -2,74 +2,45 @@
 
 Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
 
+## Requirements
+
+- NodeJS (recommended v22.4.1)
+
 ## Setup
 
 Make sure to install dependencies:
 
 ```bash
 # npm
+nvm use
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
 ```
 
-## Development Server
+## Development Server Setup
+
+Update the `.env` file.
+
+```env
+NUXT_PUBLIC_API_BASE_URL="http://localhost:3113"
+
+NUXT_FIREBASE_API_KEY=""
+NUXT_FIREBASE_AUTH_DOMAIN=""
+NUXT_FIREBASE_PROJECT_ID=""
+NUXT_FIREBASE_STORAGE_BUCKET=""
+NUXT_FIREBASE_MESSAGING_SENDER_ID=""
+NUXT_FIREBASE_APP_ID=""
+```
 
 Start the development server on `http://localhost:3000`:
 
 ```bash
 # npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+It should run both a development server as well as a json-server.
 
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
 ```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
+Development: http://localhost:3000
+JSON Server: http://localhost:3113
 ```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

@@ -6,7 +6,7 @@
     "build": "nuxt build",
     "dev": "npx concurrently --kill-others \"npm run dev:only\" \"npm run serve:dummy\"",
     "dev:only": "nuxt dev --host",
-    "serve:dummy": "npx json-server --watch .data/db.json --port 3113 --host 0.0.0.0",
+    "serve:dummy": "npx json-server --watch .dummy/db.json --port 3113 --host 0.0.0.0",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
