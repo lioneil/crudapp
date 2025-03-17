@@ -8,12 +8,12 @@
     {
       "id": "2",
       "title": "Buy eggs",
-      "completed": false
+      "completed": true
     },
     {
       "id": "9cc8",
       "title": "See the world",
-      "completed": true
+      "completed": false
     },
     {
       "id": "7b9c",
@@ -22,7 +22,7 @@
     },
     {
       "id": "4686",
-      "title": "Buy milk",
+      "title": "Buy milk again",
       "completed": false
     }
   ]
