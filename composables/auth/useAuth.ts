@@ -19,6 +19,7 @@ export function useAuth() {
     loading.value = true;
     user.value = await onFirebaseAuthStateChanges();
     loading.value = false;
+    console.log(11, user.value);
     await setupRedirects();
   }
 

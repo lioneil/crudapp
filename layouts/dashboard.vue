@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import { useAuth } from '~/composables/auth/useAuth';
 import DashboardSidebar from '~/components/dashboard/Sidebar.vue';
 import AppHeader from '~/components/app/Header.vue';

@@ -11,7 +11,9 @@ definePageMeta({
 </script>
 
 <template>
-  <Container class="flex-row items-start">
+  <Container class="flex-col items-start">
     <LazyWidgetsGreetings />
+
+    <LazyWidgetsRecentTasks />
   </Container>
 </template>

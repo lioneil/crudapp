@@ -16,5 +16,8 @@ export default defineNuxtConfig({
       firebaseMessagingSenderId: process.env.NUXT_FIREBASE_MESSAGING_SENDER_ID,
       firebaseAppId: process.env.NUXT_FIREBASE_APP_ID,
     },
+    public: {
+      apiBaseUrl: '',
+    },
   },
 });

@@ -1,4 +1,4 @@
-<script lang="ts" setup>
+<script setup lang="ts">
 import Container from '~/components/app/Container.vue';
 import MainNav from '~/components/app/MainNav.vue';
 import UserMenu from '~/components/app/UserMenu.vue';

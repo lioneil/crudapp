@@ -4,7 +4,9 @@
   "type": "module",
   "scripts": {
     "build": "nuxt build",
-    "dev": "nuxt dev",
+    "dev": "npx concurrently --kill-others \"npm run dev:only\" \"npm run serve:dummy\"",
+    "dev:only": "nuxt dev --host",
+    "serve:dummy": "npx json-server --watch .data/db.json --port 3113 --host 0.0.0.0",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare"
@@ -23,6 +25,8 @@
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.17.16"
+    "@types/lodash": "^4.17.16",
+    "concurrently": "^9.1.2",
+    "json-server": "^1.0.0-beta.3"
   }
 }
