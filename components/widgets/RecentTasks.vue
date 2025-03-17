@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useTaskService } from '~/composables/services/tasks/useTaskService';
 
-const { loading, list, items } = useTaskService();
+const { loading, list, items, update } = useTaskService();
 await list();
 </script>
 
@@ -16,9 +16,25 @@ await list();
     <UTable
       :loading="loading"
       :data="items"
+      :columns="[
+        { accessorKey: 'title', header: 'Name' },
+        { accessorKey: 'completed', header: 'Status' },
+      ]"
       :column-visibility="{ id: false  }"
       class="flex-1"
-    />
+    >
+      <template v-slot:title-cell="{ row }">
+        <span :class="{ 'line-through': row.original.completed }">{{ row.original.title }}</span>
+      </template>
+      <template v-slot:completed-cell="{ row }">
+        <UButton
+          :icon="row.original.completed ? 'i-heroicons-check-circle' : 'i-heroicons-x-circle'"
+          :color="row.original.completed ? 'primary' : 'secondary'"
+          variant="ghost"
+          @click="update(row.original.id as string, { ...row.original, completed: !row.original.completed })"
+        >{{ row.original.completed ? 'Mark as pending' : 'Mark as completed' }}</UButton>
+      </template>
+    </UTable>
     <template #footer>
       <div class="text-end">
         <ULink to="/tasks" class="text-sm">View All Tasks</ULink>
