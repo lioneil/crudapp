@@ -3,34 +3,20 @@ import TaskForm from '~/components/tasks/Form.vue';
 import Container from '~/components/app/Container.vue';
 import { useTaskService } from '~/composables/services/tasks/useTaskService';
 import { type Task } from '~/types/task';
+import moment from 'moment';
 
-const $router = useRouter();
 const { loading, items, metadata, useForm, list, update, on } = useTaskService();
 
 await list();
 
 const state = useForm();
 
-const page = ref(1);
-const itemsPerPage = 10;
-
-const paginatedItems = computed(() =>
-  items.value.slice((page.value - 1) * itemsPerPage, page.value * itemsPerPage)
-);
-
-const totalPages = computed(() => Math.ceil(items.value.length / itemsPerPage));
-
-
-const onSearch = async (state: Task) => {
-  await $router.push({ query: { q: state.title } });
-  await list();
-}
-
 const onItemClick = async (state: Task) => {
   await update(state.id as string, { ...state, completed: !state.completed });
 }
 
-on('tasks:updated', list);
+on('tasks:updated', () => list());
+on('tasks:added', () => list());
 
 definePageMeta({
   title: 'Tasks',
@@ -40,14 +26,16 @@ definePageMeta({
 
 <template>
   <Container class="flex-col items-start">
-    <TaskForm :state="state" @input="onSearch" />
-    <UCard :ui="{ body: 'sm:p-0 p-0' }" class="w-full">
+    <TaskForm :state="state" />
+    <UCard :ui="{ body: 'sm:p-0 p-0' }" class="w-full max-w-full">
       <UTable
         :loading="loading"
         :data="items"
         :columns="[
           { accessorKey: 'title', header: 'Name' },
           { accessorKey: 'completed', header: 'Status' },
+          { accessorKey: 'createdAt', header: 'Created' },
+          { accessorKey: 'updatedAt', header: 'Updated' },
         ]"
         :column-visibility="{ id: false  }"
         class="flex-1"
@@ -66,6 +54,12 @@ definePageMeta({
             {{ row.original.completed ? 'Mark as pending' : 'Mark as completed' }}
           </UButton>
         </template>
+        <template v-slot:createdAt-cell="{ row }">
+          <span>{{ moment(row.original.createdAt).fromNow() }}</span>
+        </template>
+        <template v-slot:updatedAt-cell="{ row }">
+          <span>{{ moment(row.original.updatedAt).fromNow() }}</span>
+        </template>
       </UTable>
 
     </UCard>
@@ -78,14 +72,13 @@ definePageMeta({
         variant="ghost"
         @click="metadata.page--"
       />
-      <span>Page {{ page }} of {{ metadata.pages }}</span>
+      <span>Page {{ metadata.page }} of {{ metadata.pages }}</span>
       <UButton
         :disabled="metadata.page >= metadata.total"
         icon="i-heroicons-arrow-right"
         color="neutral"
         class="cursor-pointer"
         variant="ghost"
-        @click="onNext"
       />
     </div>
   </Container>

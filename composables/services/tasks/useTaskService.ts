@@ -12,7 +12,7 @@ export const useTaskService = () => {
   const $route = useRoute();
   const query = computed(() => $route.query);
 
-  const useForm = () => useState<Task>('tasks.form', () => ({
+  const useForm = () => useState<Partial<Task>>('tasks.form', () => ({
     id: undefined,
     title: undefined,
     completed: false,
@@ -66,7 +66,7 @@ export const useTaskService = () => {
 
       const task = await $service.api(`/api/v1/tasks/${id}`, {
         method: 'patch',
-        body: data,
+        body: JSON.stringify(data),
       });
 
       if (!task) throw new Error('Failed to update task');

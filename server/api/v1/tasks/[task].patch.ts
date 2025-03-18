@@ -21,10 +21,13 @@ export default defineEventHandler(async (event) => {
   try {
     const response = await useApi(`/tasks/${taskId}`, {
       method: 'PATCH',
-      body,
+      body: {
+        ...body,
+        updatedAt: new Date().toISOString(),
+      },
     });
 
-    return response;
+    return response._data;
   } catch (error) {
     throw createError({
       statusCode: 500,

@@ -7,7 +7,7 @@ import AppHeader from '~/components/app/Header.vue';
 <template>
   <div class="min-h-screen flex">
     <DashboardSidebar />
-    <main id="main" class="main ml-64 flex-1 bg-gray-100">
+    <main id="main" class="main max-w-full flex-1 bg-gray-100">
       <AppHeader />
       <div class="px-4 pb-10">
         <NuxtPage />

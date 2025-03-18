@@ -18,7 +18,7 @@ const navItems = ref<NavItem[]>([
 </script>
 
 <template>
-  <aside class="fixed w-64 h-screen bg-gray-50 p-4 flex flex-col">
+  <aside class="sidebar fixed w-64 h-screen bg-gray-50 p-4 flex flex-col md:static md:w-64 md:h-auto md:flex-shrink-0">
     <h1 class="text-2xl font-bold mb-6 px-2">{{ config.app.name }}</h1>
 
     <nav>
@@ -36,8 +36,7 @@ const navItems = ref<NavItem[]>([
     </nav>
 
     <div class="flex flex-col gap-4 mt-auto text-center">
-      <!-- <LazyAppNameTag class="items-center" /> -->
-      <LazyAppUserMenu />
+      <LazyAppUserMenu class="hidden md:flex" />
       <p class="text-sm">&copy; {{ new Date().getFullYear() }} {{ config.app.name }}</p>
     </div>
   </aside>
@@ -47,5 +46,18 @@ const navItems = ref<NavItem[]>([
 html, body {
   height: 100%;
   margin: 0;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    z-index: 50;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .sidebar.open {
+    transform: translateX(0);
+  }
 }
 </style>
