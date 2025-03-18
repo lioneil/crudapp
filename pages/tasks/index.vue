@@ -2,13 +2,35 @@
 import TaskForm from '~/components/tasks/Form.vue';
 import Container from '~/components/app/Container.vue';
 import { useTaskService } from '~/composables/services/tasks/useTaskService';
-import type { Task } from '~/types/task';
+import { type Task } from '~/types/task';
 
-const { loading, items, useForm, list, add, update } = useTaskService();
+const $router = useRouter();
+const { loading, items, metadata, useForm, list, update, on } = useTaskService();
 
 await list();
 
 const state = useForm();
+
+const page = ref(1);
+const itemsPerPage = 10;
+
+const paginatedItems = computed(() =>
+  items.value.slice((page.value - 1) * itemsPerPage, page.value * itemsPerPage)
+);
+
+const totalPages = computed(() => Math.ceil(items.value.length / itemsPerPage));
+
+
+const onSearch = async (state: Task) => {
+  await $router.push({ query: { q: state.title } });
+  await list();
+}
+
+const onItemClick = async (state: Task) => {
+  await update(state.id as string, { ...state, completed: !state.completed });
+}
+
+on('tasks:updated', list);
 
 definePageMeta({
   title: 'Tasks',
@@ -17,8 +39,8 @@ definePageMeta({
 </script>
 
 <template>
-  <Container class="flex-col">
-    <TaskForm :state="state" @submit="add" />
+  <Container class="flex-col items-start">
+    <TaskForm :state="state" @input="onSearch" />
     <UCard :ui="{ body: 'sm:p-0 p-0' }" class="w-full">
       <UTable
         :loading="loading"
@@ -35,13 +57,36 @@ definePageMeta({
         </template>
         <template v-slot:completed-cell="{ row }">
           <UButton
-            :icon="row.original.completed ? 'i-heroicons-check-circle' : 'i-heroicons-x-circle'"
-            :color="row.original.completed ? 'primary' : 'secondary'"
+            :icon="row.original.completed ? 'i-heroicons-x-circle' : 'i-heroicons-check-circle'"
+            :color="row.original.completed ? 'secondary' : 'primary'"
             variant="ghost"
-            @click="update(row.original.id as string, { ...row.original, completed: !row.original.completed })"
-          >{{ row.original.completed ? 'Mark as pending' : 'Mark as completed' }}</UButton>
+            type="button"
+            @click.stop="onItemClick(row.original as Task)"
+          >
+            {{ row.original.completed ? 'Mark as pending' : 'Mark as completed' }}
+          </UButton>
         </template>
       </UTable>
+
     </UCard>
+    <div class="flex my-4 justify-end items-center gap-2">
+      <UButton
+        :disabled="metadata.page === 1"
+        icon="i-heroicons-arrow-left"
+        color="neutral"
+        class="cursor-pointer"
+        variant="ghost"
+        @click="metadata.page--"
+      />
+      <span>Page {{ page }} of {{ metadata.pages }}</span>
+      <UButton
+        :disabled="metadata.page >= metadata.total"
+        icon="i-heroicons-arrow-right"
+        color="neutral"
+        class="cursor-pointer"
+        variant="ghost"
+        @click="onNext"
+      />
+    </div>
   </Container>
 </template>

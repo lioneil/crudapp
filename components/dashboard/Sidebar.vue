@@ -18,7 +18,7 @@ const navItems = ref<NavItem[]>([
 </script>
 
 <template>
-  <aside class="w-64 h-screen bg-gray-50 p-4 flex flex-col">
+  <aside class="fixed w-64 h-screen bg-gray-50 p-4 flex flex-col">
     <h1 class="text-2xl font-bold mb-6 px-2">{{ config.app.name }}</h1>
 
     <nav>

@@ -2,7 +2,7 @@
 import { useTaskService } from '~/composables/services/tasks/useTaskService';
 
 const { loading, list, items, update } = useTaskService();
-await list();
+await list({ _limit: 5 });
 </script>
 
 <template>

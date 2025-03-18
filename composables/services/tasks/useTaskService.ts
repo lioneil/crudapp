@@ -1,70 +1,88 @@
+import { useBaseService, type ListOptions, type MetadataOptions } from '~/composables/services/useBaseService.js';
 import type { Task } from '~/types/task';
+import cloneDeep from 'lodash/cloneDeep';
+
+export interface TaskResponse {
+  data: Task[];
+  meta: MetadataOptions;
+}
 
 export const useTaskService = () => {
-  const loading = useState<boolean>('tasks.loading', () => false);
-  const items = useState<Task[]>('tasks.data', () => []);
+  const $service = useBaseService('tasks');
+  const $route = useRoute();
+  const query = computed(() => $route.query);
 
   const useForm = () => useState<Task>('tasks.form', () => ({
     id: undefined,
-    title: '',
+    title: undefined,
     completed: false,
   }));
 
-  const list = async () => {
-    loading.value = true;
-
+  const list = async (options: ListOptions = {}) => {
     try {
-      const { data, error, refresh } = await useAsyncData<Task[]>('tasks', () =>
-        $fetch('/api/v1/tasks')
+      $service.startLoading();
+
+      const { data, error, refresh } = await useAsyncData<TaskResponse>('tasks', () =>
+        $fetch('/api/v1/tasks', {
+          params: { ...options, ...cloneDeep(query.value) },
+        })
       );
 
       if (error.value) throw error.value;
 
-      if (data.value) {
-        items.value = data.value;
-      }
+      $service.setItems(data.value?.data || []);
+      $service.setMetadata(data.value?.meta || {});
 
-      return { refresh };
-    } catch (e) {
+      $service.emit('tasks:loaded', { refresh });
+    } catch (e: unknown) {
       console.error('Failed to fetch tasks:', e);
     } finally {
-      loading.value = false;
+      $service.stopLoading();
     }
   };
 
   const add = async (data: Task) => {
     try {
-      loading.value = true;
-      await useFetch('/api/v1/tasks', { method: 'post', body: JSON.stringify({ title: data.title }) });
+      $service.startLoading();
 
-      await list();
-    } catch (e) {
-      console.error(e);
+      const task = await $service.api('/api/v1/tasks', {
+        method: 'post',
+        body: JSON.stringify({ title: data.title, completed: false }),
+      });
+
+      if (!task) throw new Error('Failed to add task');
+
+      $service.emit('tasks:added', { task });
+    } catch (e: unknown) {
+      console.error('Failed to add task:', e);
     } finally {
-      loading.value = false;
+      $service.stopLoading();
     }
-  }
+  };
 
   const update = async (id: string, data: Task) => {
     try {
-      loading.value = true;
-      await useFetch(`/api/v1/tasks/${id}`, { method: 'patch', body: JSON.stringify(data) });
-      loading.value = false;
+      $service.startLoading();
 
-      await list();
-    } catch (e) {
-      console.error(e);
+      const task = await $service.api(`/api/v1/tasks/${id}`, {
+        method: 'patch',
+        body: data,
+      });
+
+      if (!task) throw new Error('Failed to update task');
+
+      $service.emit('tasks:updated', { task });
+    } catch (e: unknown) {
+      console.error('Failed to update task:', e);
     } finally {
-      loading.value = false;
+      $service.stopLoading();
     }
-  }
+  };
 
-  return {
-    loading,
-    items,
+  return $service.merge({
     useForm,
     list,
     add,
     update,
-  };
+  });
 };

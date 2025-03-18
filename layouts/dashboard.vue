@@ -5,11 +5,11 @@ import AppHeader from '~/components/app/Header.vue';
 </script>
 
 <template>
-  <div class="h-screen flex">
+  <div class="min-h-screen flex">
     <DashboardSidebar />
-    <main class="flex-1 bg-gray-100">
+    <main id="main" class="main ml-64 flex-1 bg-gray-100">
       <AppHeader />
-      <div class="px-4">
+      <div class="px-4 pb-10">
         <NuxtPage />
       </div>
     </main>

@@ -26,7 +26,6 @@ export default defineEventHandler(async (event) => {
 
     return response;
   } catch (error) {
-    console.log(11, error)
     throw createError({
       statusCode: 500,
       statusMessage: 'Failed to update task in json-server',
