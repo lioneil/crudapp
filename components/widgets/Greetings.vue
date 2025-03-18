@@ -5,7 +5,7 @@ const { user } = useAuth();
 </script>
 
 <template>
-  <UCard v-if="user" class="text-md">
+  <UCard v-if="user" class="text-md min-w-sm">
     <div class="flex flex-row items-center">
       <p>👋&nbsp;<span class="italic">Welcome back</span>, {{ user.displayName }}!</p>
     </div>

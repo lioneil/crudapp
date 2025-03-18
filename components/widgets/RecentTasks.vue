@@ -6,7 +6,7 @@ await list({ _limit: 5 });
 </script>
 
 <template>
-  <UCard :ui="{ body: 'sm:p-0 p-0' }" class="min-w-2xs">
+  <UCard :ui="{ body: 'sm:p-0 p-0' }" class="min-w-sm">
     <template #header>
       <h1 class="flex gap-2 items-center font-bold">
         <UIcon name="i-heroicons-clipboard" class="w-5 h-5" />

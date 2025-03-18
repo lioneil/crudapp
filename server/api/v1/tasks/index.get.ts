@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
       query: {
         ...query,
         q: query.q || '',
-        _sort: 'updatedAt',
+        _sort: 'createdAt',
         _order: 'desc',
         _start: offset,
         _limit: limit,

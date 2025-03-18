@@ -5,11 +5,11 @@ import { useTaskService } from '~/composables/services/tasks/useTaskService';
 import { type Task } from '~/types/task';
 import moment from 'moment';
 
-const { loading, items, metadata, useForm, list, update, on } = useTaskService();
+const { loading, items, metadata, useFields, list, update, on } = useTaskService();
 
 await list();
 
-const state = useForm();
+const state = useFields();
 
 const onItemClick = async (state: Task) => {
   await update(state.id as string, { ...state, completed: !state.completed });

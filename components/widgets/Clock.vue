@@ -10,10 +10,12 @@ useIntervalFn(() => {
 </script>
 
 <template>
-  <div class="font-light text-sm">
-    <div class="flex flex-row gap-2 items-center">
-      <UIcon name="i-lucide-clock" class="size-5" />
-      <span>{{ currentTime }}</span>
+  <ClientOnly>
+    <div class="font-light text-sm">
+      <div class="flex flex-row gap-2 items-center">
+        <UIcon name="i-lucide-clock" class="size-5" />
+        <span>{{ currentTime }}</span>
+      </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>

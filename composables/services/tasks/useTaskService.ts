@@ -12,11 +12,15 @@ export const useTaskService = () => {
   const $route = useRoute();
   const query = computed(() => $route.query);
 
-  const useForm = () => useState<Partial<Task>>('tasks.form', () => ({
+  const useFields = () => useState<Partial<Task>>('tasks.form', () => ({
     id: undefined,
     title: undefined,
     completed: false,
   }));
+
+  const rules = ref([
+    (v: string) => !!v || 'Task title is required',
+  ]);
 
   const list = async (options: ListOptions = {}) => {
     try {
@@ -80,7 +84,8 @@ export const useTaskService = () => {
   };
 
   return $service.merge({
-    useForm,
+    useFields,
+    rules,
     list,
     add,
     update,
