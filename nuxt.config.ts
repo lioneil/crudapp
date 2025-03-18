@@ -20,4 +20,12 @@ export default defineNuxtConfig({
       apiBaseUrl: '',
     },
   },
+
+  vite: {
+    server: {
+      watch: {
+        ignored: ['**/.dummy/**'],
+      },
+    },
+  },
 });
