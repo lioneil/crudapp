@@ -12,7 +12,7 @@ const emit = defineEmits<{
     (e: 'input', v: Task): void;
 }>();
 
-const { add, rules } = useTaskService();
+const { add } = useTaskService();
 
 const state = ref<Task>({
   id: props.state?.id ?? undefined,
@@ -38,7 +38,6 @@ const onInput = debounce(async () => {
         <span class="font-bold">New Task</span>
         <UInput
           v-model="state.title"
-          :rules="rules"
           autofocus
           required
           class="flex-1"
