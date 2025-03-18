@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import Container from '~/components/app/Container.vue';
 import UserMenu from '~/components/app/UserMenu.vue';
-import SidebarToggle from '~/components/dashboard/SidebarToggle.vue';
 </script>
 
 <template>
